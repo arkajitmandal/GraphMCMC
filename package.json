@@ -69,7 +69,9 @@
   },
   "repository": "arkajitmandal/graph-mcmc",
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverage":true,
+    "collectCoverageFrom":["lib/**/*.{js,jsx}","!**/node_modules/**"]
   },
   "license": "Apache-2.0"
 }
