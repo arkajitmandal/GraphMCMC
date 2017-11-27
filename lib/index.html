@@ -43,6 +43,7 @@ async function clr() {
   Nodes = [];
   Lock = false;
   graphExist = false;
+  pause =false;
   try {
   document.getElementById('canvasActive').id = 'canvasInactive';
   document.getElementById('canvasInactive').innerHTML = "Start &#9658;";}
@@ -135,9 +136,12 @@ async function start(){
 
   nowG = proposeGraph(nowG);
   while (run){
-    nowG = proposeGraph(nowG);
+    let newG = proposeGraph(nowG);
+    if (monteCarlo(getProbability(nowG,newG,1000))){
     await sleep(100);
-    drawGraph(nowG);
+    drawGraph(newG);
+    nowG = newG;
+    }
   }
   document.getElementById('canvasActive').id = 'canvasInactive';
 }
@@ -186,7 +190,9 @@ function drawGraph(dG){
     <button onclick='clr();' style="margin-top:20px;height:40px">
     Reset &#x21bb;
     </button>
-
+    <br>
+    <label for="T">T</label>
+<input type='number' value='1000' name='T'/> 
 </body>
 
 

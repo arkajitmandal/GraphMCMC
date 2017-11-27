@@ -195,3 +195,21 @@ body {
     border-color: #ff005b;
     box-shadow: 0 0 15px #ff005b, inset 0 0 15px #ff005b;
   }
+  input {
+    background: #333;
+    display: flex;
+    border: 2px solid #444;
+    height: 2.25em;
+    border-radius: 2.25em;
+    color: #c5c5c5;
+    font-size: 1.25em;
+    font-weight: bold;
+    outline: none;
+    text-align: center;
+  }
+  label {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #c5c5c5;  
+  }
