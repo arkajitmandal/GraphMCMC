@@ -12,7 +12,9 @@ var Nodes = [];
 var Edges = [];
 var Lock = false;
 var run = true;
-
+var pause =false;
+var graphExist = false;
+var nowG;
 function drawNode(x, y, fill = "#ff005b") {
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
@@ -33,13 +35,20 @@ function drawNode(x, y, fill = "#ff005b") {
 }
 
 async function clr() {
-  run = false;
+  run = false; 
   await sleep(100);  
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
   Nodes = [];
   Lock = false;
+  graphExist = false;
+  try {
+  document.getElementById('canvasActive').id = 'canvasInactive';
+  document.getElementById('canvasInactive').innerHTML = "Start &#9658;";}
+  catch(err){
+      document.getElementById('canvasInactive').innerHTML = "Start &#9658;";
+  }
 };
 
 function addNode(evt) {
@@ -94,33 +103,45 @@ function drawEdge(x1,y1,x2,y2,fill='#00E676'){
 }
 
 async function start(){
+  if (pause){
+      pause=false;
+      run = false;
+      document.getElementById('canvasActive').innerHTML = "Start &#9658;";
+  }
+  else {
   run =true;
+  pause = true;
   //Button Activate
   document.getElementById('canvasInactive').id = 'canvasActive';
+  document.getElementById('canvasActive').innerHTML = "Pause &#10073;&#10073;";
   //clean
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
   //makeGraph
-  let nowG = new Graph();
-  nowG.addNode(new Node(Nodes[0][0], Nodes[0][1]));
-  for(var i=1;i<Nodes.length;i++){
-    nowG.addNode(new Node(Nodes[i][0], Nodes[i][1]));
-  }
-  for(var i=1;i<nowG.Nodes.length;i++){
+  if (!graphExist){
+    console.log("Creating")
+    nowG = new Graph();
+    nowG.addNode(new Node(Nodes[0][0], Nodes[0][1]));
+    for(var i=1;i<Nodes.length;i++){
+      nowG.addNode(new Node(Nodes[i][0], Nodes[i][1]));
+    }
+    for(var i=1;i<nowG.Nodes.length;i++){
     nowG.addEdge(new Edge(nowG.Nodes[0],nowG.Nodes[i]));
-  }
-
+    }
+    graphExist = true;
+    }
   drawGraph(nowG);
-  let cc=0;
-  var wG = proposeGraph(nowG);
-  while (cc<1000 && run){
-    wG = proposeGraph(wG);
+
+  nowG = proposeGraph(nowG);
+  while (run){
+    nowG = proposeGraph(nowG);
     await sleep(100);
-    drawGraph(wG);
-    cc++;
+    drawGraph(nowG);
   }
   document.getElementById('canvasActive').id = 'canvasInactive';
+}
+
 }
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -159,11 +180,11 @@ function drawGraph(dG){
     <canvas onclick="addNode(event);" id="myCanvas" width="900" height="400" ></canvas>
     
     <button onclick='start();' style="margin-top:20px;height:40px" id='canvasInactive'>
-    Start
+    Start &#9658;
     </button>
     
-    <button onclick='clr();' style="margin-top:20px;">
-    Reset
+    <button onclick='clr();' style="margin-top:20px;height:40px">
+    Reset &#x21bb;
     </button>
 
 </body>
