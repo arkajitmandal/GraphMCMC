@@ -11,7 +11,7 @@
 var Nodes = [];
 var Edges = [];
 var Lock = false;
-
+var run = true;
 
 function drawNode(x, y, fill = "#ff005b") {
   var canvas = document.getElementById("myCanvas");
@@ -32,7 +32,9 @@ function drawNode(x, y, fill = "#ff005b") {
   context.stroke();
 }
 
-var clr = function() {
+async function clr() {
+  run = false;
+  await sleep(100);  
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -92,6 +94,7 @@ function drawEdge(x1,y1,x2,y2,fill='#00E676'){
 }
 
 async function start(){
+  run =true;
   //Button Activate
   document.getElementById('canvasInactive').id = 'canvasActive';
   //clean
@@ -107,16 +110,17 @@ async function start(){
   for(var i=1;i<nowG.Nodes.length;i++){
     nowG.addEdge(new Edge(nowG.Nodes[0],nowG.Nodes[i]));
   }
-  
+
   drawGraph(nowG);
   let cc=0;
   var wG = proposeGraph(nowG);
-  while (cc<1000){
+  while (cc<1000 && run){
     wG = proposeGraph(wG);
     await sleep(100);
     drawGraph(wG);
     cc++;
   }
+  document.getElementById('canvasActive').id = 'canvasInactive';
 }
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
