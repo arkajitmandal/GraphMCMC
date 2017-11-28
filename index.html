@@ -1,6 +1,6 @@
 <html>
 <head>
-<link rel="stylesheet" href="style.css">        
+<link rel="stylesheet" href="style.css"> 
 <script src="lib/index.js"></script>
 <script>
         
@@ -15,6 +15,7 @@ var T = 1000;
 var blue = '#2196F3';
 var red = '#ff005b';
 var green = '#00E676'
+var R =1.0;
 function drawNode(x, y, fill = "#ff005b") {
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
@@ -44,6 +45,8 @@ async function clr() {
   Lock = false;
   graphExist = false;
   pause =false;
+  document.getElementsByName('R')[0].disabled = false;
+  document.getElementsByName('R')[0].id = 'setr';
   try {
   document.getElementById('canvasActive').id = 'canvasInactive';
   document.getElementById('canvasInactive').innerHTML = "Start &#9658;";}
@@ -110,6 +113,8 @@ async function start(){
       document.getElementById('canvasActive').innerHTML = "Start &#9658;";
   }
   else {
+  document.getElementsByName('R')[0].disabled = true;
+  document.getElementsByName('R')[0].id = 'setrdisabled';
   run =true;
   pause = true;
   //Button Activate
@@ -130,16 +135,19 @@ async function start(){
     for(var i=1;i<nowG.Nodes.length;i++){
     nowG.addEdge(new Edge(nowG.Nodes[0],nowG.Nodes[i]));
     }
+    nowG.setr(R);
     graphExist = true;
     }
   if (nowG !== undefined)  {
   drawGraph(nowG);
 
   nowG = proposeGraph(nowG);
+  nowG.setr(R);
   while (run){
     let newG = proposeGraph(nowG);
+    newG.setr(R);
     if (monteCarlo(getProbability(nowG,newG,T))){
-    await sleep(100);
+    await sleep(200);
     drawGraph(newG);
     nowG = newG;
     }
@@ -155,6 +163,12 @@ function sleep(ms) {
 
 function setT(){
     T = document.getElementsByName('T')[0].value;
+}
+
+
+function setR(){
+    let r = document.getElementsByName('R')[0].value;
+    R =r;
 }
 
 function drawGraph(dG){
@@ -207,8 +221,10 @@ function drawGraph(dG){
     Reset &#x21bb;
     </button>
     <br>
-    <label for="T">T</label>
+<label for="T">T</label>
 <input type='text' value='1000' name='T' onkeyup="setT();"/> 
+<label for="R">r</label>
+<input id='setr' type='text' value='1.0' name='R' onkeyup="setR();"/> 
 </body>
 
 
