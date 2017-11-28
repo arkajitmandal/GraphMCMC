@@ -1,6 +1,6 @@
-# graph-mcmc [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> This is a Initial version of Graph
-<img align="right" width="350"  src="GraphDemo.gif">
+# Welcome to Interactive MCMC
+ 
+<img width="450"  src="GraphDemo.gif" style="max-width:100%;padding: 5px;border: 2px solid #444;margin: 50px;">
 
 ## Create a Graph
 
