@@ -136,17 +136,19 @@ async function start(){
     }
     graphExist = true;
     }
+  if (nowG !== undefined)  {
   drawGraph(nowG);
 
   nowG = proposeGraph(nowG);
   while (run){
     let newG = proposeGraph(nowG);
     if (monteCarlo(getProbability(nowG,newG,T))){
-    await sleep(1000);
+    await sleep(100);
     drawGraph(newG);
     nowG = newG;
     }
   }
+}
   document.getElementById('canvasActive').id = 'canvasInactive';
 }
 

@@ -195,6 +195,13 @@ body {
     border-color: #ff005b;
     box-shadow: 0 0 15px #ff005b, inset 0 0 15px #ff005b;
   }
+
+  #canvasPause {
+    color: #ff005b;
+    text-shadow: 0 0 7px #ff005b;
+    border-color: #ff005b;
+    box-shadow: 0 0 15px #ff005b, inset 0 0 15px #ff005b;
+  }
   input {
     background: #333;
     display: flex;
@@ -213,3 +220,5 @@ body {
     font-weight: bold;
     color: #c5c5c5;  
   }
+
+  
