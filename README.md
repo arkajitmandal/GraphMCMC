@@ -1,6 +1,6 @@
 # Welcome to Interactive MCMC
  
-<img width="450"  src="GraphDemo.gif" style="max-width:100%;padding: 5px;border: 2px solid #444;margin: 50px;">
+<img width="450"  src="GraphDemo.gif" style="border-radius: 50px;">
 
 ## Create a Graph
 
