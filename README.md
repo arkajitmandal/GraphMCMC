@@ -1,9 +1,7 @@
 # Welcome to Interactive MCMC
  
 <img width="450"  src="GraphDemo.gif" style="max-width:100%;padding: 5px;border: 2px solid #444;margin: 50px;">
-<iframe src="https://www.w3schools.com">
-  <p>Your browser does not support iframes.</p>
-</iframe>
+
 ## Create a Graph
 
 ```js
