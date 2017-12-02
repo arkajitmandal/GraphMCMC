@@ -3,7 +3,9 @@
 <link rel="stylesheet" href="style.css"> 
 <script src="lib/index.js"></script>
 <script>
-        
+var avgEdge = 0; 
+var avgMainEdge = 0;           
+var Counts = 1;
 var Nodes = [];
 var Edges = [];
 var Lock = false;
@@ -16,6 +18,7 @@ var blue = '#2196F3';
 var red = '#ff005b';
 var green = '#00E676'
 var R =1.0;
+var shortPath = Array(0);
 function drawNode(x, y, fill = "#ff005b") {
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
@@ -37,6 +40,10 @@ function drawNode(x, y, fill = "#ff005b") {
 
 async function clr() {
   run = false; 
+  shortPath = Array(0);
+  avgEdge = 0; 
+  avgMainEdge = 0;           
+  Counts = 1;
   await sleep(100);  
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
@@ -124,9 +131,11 @@ async function start(){
   var canvas = document.getElementById("myCanvas");
   var context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
+  if (Nodes.length === 0){
+    showInfo("Error! You have No Nodes!",20,20);
+  }
   //makeGraph
   if (!graphExist){
-    console.log("Creating")
     nowG = new Graph();
     nowG.addNode(new Node(Nodes[0][0], Nodes[0][1]));
     for(var i=1;i<Nodes.length;i++){
@@ -138,11 +147,14 @@ async function start(){
     nowG.setr(R);
     graphExist = true;
     }
+
   if (nowG !== undefined)  {
   drawGraph(nowG);
-
+  
   nowG = proposeGraph(nowG);
   nowG.setr(R);
+  shortPath = Array(nowG.Nodes.length).fill(0);
+  
   while (run){
     let newG = proposeGraph(nowG);
     newG.setr(R);
@@ -150,8 +162,38 @@ async function start(){
     await sleep(200);
     drawGraph(newG);
     nowG = newG;
+    // Graph Properties Calculated Here
+
+    let edge0 = 0
+    for (var l=0;l<nowG.Edges.length;l++){
+      if (nowG.Edges[l].nodes[0].id === nowG.Nodes[0].id){
+        edge0++
+      }
+      if (nowG.Edges[l].nodes[1].id === nowG.Nodes[0].id){
+        edge0++
+      }
     }
-  }
+    
+    avgEdge = avgEdge + nowG.Edges.length;
+    avgMainEdge = avgMainEdge + edge0;
+    let distance = Array(newG.Nodes.length).fill(Infinity);
+    distance[0] = 0;
+    distance = djikstra(0, nowG, [], distance);
+    
+
+    for (var l=0;l<nowG.Nodes.length;l++){
+      shortPath[l] = shortPath[l] + distance[l]
+      
+    }
+    
+    let avgPath = Array(distance.length);
+    for (var l=0;l<avgPath.length;l++){
+      avgPath[l] =   shortPath[l]/Counts;
+    }
+    showInfo(`Average # of Edges: ${Math.round( avgEdge/Counts * 1000 ) / 1000}`,20,20)
+    showInfo(`Average # of Edges on Center: ${Math.round( avgMainEdge/Counts * 1000 ) / 1000}`,20,40)
+    Counts++
+  }}
 }
   document.getElementById('canvasActive').id = 'canvasInactive';
 }
@@ -198,8 +240,21 @@ function drawGraph(dG){
    }
  }
 
+function showInfo(txt,side1,side2){
+  var canvas = document.getElementById("myCanvas");
+  var context = canvas.getContext("2d");
+  context.font="15px Helvetica";
+  context.fillStyle = "white";
+  context.shadowBlur = 0;
+  context.fillText(txt,side1,side2);
+  
+}
 
-        
+function showPath(){
+
+ console.log(shortPath);
+}
+
         </script>
 
 
@@ -225,6 +280,9 @@ function drawGraph(dG){
 <input type='text' value='1000' name='T' onkeyup="setT();"/> 
 <label for="R">r</label>
 <input id='setr' type='text' value='1.0' name='R' onkeyup="setR();"/> 
+<div >
+  
+</div>
 </body>
 
 
