@@ -19,7 +19,10 @@ Write the following in the console to get the info about the expected shortest p
 ```js
 showInfo()
 ```
-
+Write the following in the console (in Google Chrome open inspect element) to see the best graph
+```js
+showBest()
+```
 That's all folks!
 ## License
 

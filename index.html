@@ -18,6 +18,7 @@ var blue = '#2196F3';
 var red = '#ff005b';
 var green = '#00E676'
 var R =1.0;
+var Best;
 var shortPath = Array(0);
 function drawNode(x, y, fill = "#ff005b") {
   var canvas = document.getElementById("myCanvas");
@@ -150,7 +151,7 @@ async function start(){
 
   if (nowG !== undefined)  {
   drawGraph(nowG);
-  
+  Best = nowG;
   nowG = proposeGraph(nowG);
   nowG.setr(R);
   shortPath = Array(nowG.Nodes.length).fill(0);
@@ -190,8 +191,10 @@ async function start(){
     for (var l=0;l<avgPath.length;l++){
       avgPath[l] =   shortPath[l]/Counts;
     }
+    storeBest(nowG);
     showInfo(`Average # of Edges: ${Math.round( avgEdge/Counts * 1000 ) / 1000}`,20,20)
     showInfo(`Average # of Edges on Center: ${Math.round( avgMainEdge/Counts * 1000 ) / 1000}`,20,40)
+    
     Counts++
   }}
 }
@@ -253,6 +256,19 @@ function showInfo(txt,side1,side2){
 function showPath(){
 
  console.log(shortPath);
+}
+
+
+function showBest(){
+
+  drawGraph(Best);
+}
+
+
+function storeBest(Gnew){
+  if (Gnew.getWeight() < Best.getWeight()){
+    Best = Gnew;
+  }
 }
 
         </script>
